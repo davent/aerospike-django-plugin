@@ -1,6 +1,6 @@
 "Aerospike cache module"
 from __future__ import print_function
-import time, sys
+import time, sys, traceback
 import logging
 
 import types # to check for function type for picking
@@ -358,6 +358,7 @@ class AerospikeCache(BaseCache):
         """
         self._client.close()
         logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self._client, self.server))
+        traceback.print_exc(file=sys.stdout)
         
     def unpickle(self, value):
         """
