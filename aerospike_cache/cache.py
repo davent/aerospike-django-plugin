@@ -236,6 +236,7 @@ class AerospikeCache(BaseCache):
 
         #compose the value for the cache key
         record = {self.aero_bin: value}
+        logging.debug("Client: {0}".format(self._client))
         logging.debug("Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy))
         ret = self._client.put(aero_key, record, meta, self.policy)
 
