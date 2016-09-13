@@ -274,7 +274,10 @@ class AerospikeCache(BaseCache):
         Delete a key from the cache, failing silently.
         """
         logging.debug("[{0}] Trying to remove: {1}, {2}".format(self._client, key, version))
-        self._client.remove(self.make_key(key, version=version))
+        try:
+          self._client.remove(self.make_key(key, version=version))
+        except Exception as e:
+          pass
 
     def get_many(self, keys, version=None):
         """
