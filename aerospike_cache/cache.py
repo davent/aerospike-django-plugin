@@ -353,8 +353,7 @@ class AerospikeCache(BaseCache):
         closes the database connection
         """
         logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self._client, self.server))
-        traceback.print_exc()
-        self._client.close()
+        #self._client.close()
         
     def unpickle(self, value):
         """
