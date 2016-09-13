@@ -81,7 +81,7 @@ class AerospikeCache(BaseCache):
         #check for username/password for enterprise versions
         else:
             self._client.connect(self.username, self.password)
-        logging.debug("[{0}] Aerospike client connection object for {1} initialized".format(self, self.server))
+        logging.debug("[{0}] Aerospike client connection object for {1} initialized".format(self._client, self.server))
 
 
     #for pickling, not needed as pickling is handled by the client library
@@ -236,8 +236,7 @@ class AerospikeCache(BaseCache):
 
         #compose the value for the cache key
         record = {self.aero_bin: value}
-        logging.debug("Client: {0}".format(self._client))
-        logging.debug("Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy))
+        logging.debug("[{4}] Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy, self._client))
         ret = self._client.put(aero_key, record, meta, self.policy)
 
         if ret == 0:
@@ -252,6 +251,7 @@ class AerospikeCache(BaseCache):
         aero_key = self.make_key(key, version=version)
 
         try:
+            logging.debug("[{0}] Trying to get: {1}, {2}".format(self._client, aero_key,self.policy))
             (key, metadata, record) = self._client.get(aero_key,self.policy)
             if record is None:
                 return default
@@ -351,7 +351,7 @@ class AerospikeCache(BaseCache):
         closes the database connection
         """
         self._client.close()
-        logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self, self.server))
+        logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self._client, self.server))
         
     def unpickle(self, value):
         """
