@@ -1,6 +1,7 @@
 "Aerospike cache module"
 from __future__ import print_function
 import time, sys
+import logging
 
 import types # to check for function type for picking
 
@@ -29,6 +30,7 @@ except ImportError:
     smart_text = smart_unicode
     smart_bytes = smart_str
 
+logging.basicConfig(filename='/var/log/django-aerospike.log', level=logging.DEBUG)
 
 class AerospikeCache(BaseCache):
     def __init__(self, server, params):
@@ -78,6 +80,7 @@ class AerospikeCache(BaseCache):
         #check for username/password for enterprise versions
         else:
             self._client.connect(self.username, self.password)
+        logging.debug("Aerospike client connection object for {0} initialized".format(self.server))
 
 
     #for pickling, not needed as pickling is handled by the client library
