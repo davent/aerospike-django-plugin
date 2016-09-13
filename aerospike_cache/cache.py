@@ -238,7 +238,7 @@ class AerospikeCache(BaseCache):
         record = {self.aero_bin: value}
         logging.debug("[{4}] Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy, self._client))
         logging.debug("Connected? {0}".format(self._client.is_connected()))
-        if self._client.is_connected() != Py_True:
+        if self._client.is_connected() != True:
           self._client.Connect()
         ret = self._client.put(aero_key, record, meta, self.policy)
 
@@ -256,7 +256,7 @@ class AerospikeCache(BaseCache):
         try:
             logging.debug("[{0}] Trying to get: {1}, {2}".format(self._client, aero_key,self.policy))
             logging.debug("Connected? {0}".format(self._client.is_connected()))
-            if self._client.is_connected() != Py_True:
+            if self._client.is_connected() != True:
               self._client.Connect()
             (key, metadata, record) = self._client.get(aero_key,self.policy)
             if record is None:
