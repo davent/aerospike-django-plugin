@@ -1,7 +1,6 @@
 "Aerospike cache module"
 from __future__ import print_function
 import time, sys, traceback
-import logging
 
 import types # to check for function type for picking
 
@@ -29,8 +28,6 @@ except ImportError:
     from django.utils.encoding import smart_unicode, smart_str
     smart_text = smart_unicode
     smart_bytes = smart_str
-
-logging.basicConfig(filename='/var/log/django-aerospike.log', level=logging.DEBUG)
 
 class AerospikeCache(BaseCache):
     def __init__(self, server, params):
@@ -73,7 +70,6 @@ class AerospikeCache(BaseCache):
           }
 
         self._client = aerospike.client(config)
-        logging.debug("Connecting...")
 
         #community edition does not need username/password
         if self.username is None and self.password is None:
@@ -81,7 +77,6 @@ class AerospikeCache(BaseCache):
         #check for username/password for enterprise versions
         else:
             self._client.connect(self.username, self.password)
-        logging.debug("[{0}] Aerospike client connection object for {1} initialized".format(self._client, self.server))
 
 
     #for pickling, not needed as pickling is handled by the client library
@@ -236,7 +231,6 @@ class AerospikeCache(BaseCache):
 
         #compose the value for the cache key
         record = {self.aero_bin: value}
-        logging.debug("[{4}] Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy, self._client))
         ret = self._client.put(aero_key, record, meta, self.policy)
 
         if ret == 0:
@@ -251,7 +245,6 @@ class AerospikeCache(BaseCache):
         aero_key = self.make_key(key, version=version)
 
         try:
-            logging.debug("[{0}] Trying to get: {1}, {2}".format(self._client, aero_key,self.policy))
             (key, metadata, record) = self._client.get(aero_key,self.policy)
             if record is None:
                 return default
@@ -273,7 +266,6 @@ class AerospikeCache(BaseCache):
         """
         Delete a key from the cache, failing silently.
         """
-        logging.debug("[{0}] Trying to remove: {1}, {2}".format(self._client, key, version))
         try:
           self._client.remove(self.make_key(key, version=version))
         except Exception as e:
@@ -354,7 +346,6 @@ class AerospikeCache(BaseCache):
         """
         closes the database connection
         """
-        logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self._client, self.server))
         #self._client.close()
         
     def unpickle(self, value):
