@@ -73,6 +73,7 @@ class AerospikeCache(BaseCache):
           }
 
         self._client = aerospike.client(config)
+        logging.debug("Connecting...")
 
         #community edition does not need username/password
         if self.username is None and self.password is None:
