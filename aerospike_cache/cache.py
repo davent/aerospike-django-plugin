@@ -81,7 +81,7 @@ class AerospikeCache(BaseCache):
         #check for username/password for enterprise versions
         else:
             self._client.connect(self.username, self.password)
-        logging.debug("Aerospike client connection object for {0} initialized".format(self.server))
+        logging.debug("[{0}] Aerospike client connection object for {1} initialized".format(self, self.server))
 
 
     #for pickling, not needed as pickling is handled by the client library
@@ -351,7 +351,7 @@ class AerospikeCache(BaseCache):
         closes the database connection
         """
         self._client.close()
-        logging.debug("Aerospike client connection object for {0} closed".format(self.server))
+        logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self, self.server))
         
     def unpickle(self, value):
         """
