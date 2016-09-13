@@ -238,8 +238,6 @@ class AerospikeCache(BaseCache):
         record = {self.aero_bin: value}
         logging.debug("[{4}] Trying to put: {0}, {1}, {2}, {3}".format(aero_key, record, meta, self.policy, self._client))
         logging.debug("Connected? {0}".format(self._client.is_connected()))
-        if self._client.is_connected() != True:
-          self._client.connect()
         ret = self._client.put(aero_key, record, meta, self.policy)
 
         if ret == 0:
@@ -256,8 +254,6 @@ class AerospikeCache(BaseCache):
         try:
             logging.debug("[{0}] Trying to get: {1}, {2}".format(self._client, aero_key,self.policy))
             logging.debug("Connected? {0}".format(self._client.is_connected()))
-            if self._client.is_connected() != True:
-              self._client.connect()
             (key, metadata, record) = self._client.get(aero_key,self.policy)
             if record is None:
                 return default
@@ -356,9 +352,9 @@ class AerospikeCache(BaseCache):
         """
         closes the database connection
         """
-        self._client.close()
         logging.debug("[{0}] Aerospike client connection object for {1} closed".format(self._client, self.server))
-        traceback.print_exc(file=sys.stdout)
+        traceback.print_exc()
+        self._client.close()
         
     def unpickle(self, value):
         """
