@@ -12,6 +12,7 @@ except ImportError:
 
 try:
     import aerospike
+    from aerospike import exception
 except ImportError:
     raise InvalidCacheBackendError(
         "Aerospike cache backend requires the 'aerospike' library")
@@ -252,6 +253,8 @@ class AerospikeCache(BaseCache):
             unpickled_value = self.unpickle(value)
 
             return unpickled_value
+        except exception.RecordNotFound:
+          return default
         except Exception as e:
             print("error: {0}".format(e), file=sys.stderr)
         return default
