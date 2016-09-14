@@ -66,7 +66,7 @@ class AerospikeCache(BaseCache):
               ],
               "policies": {
                   #aerospike timeout has no equivalent in django cache
-                  #"timeout": self.timeout # milliseconds
+                  "timeout": 5000 # milliseconds
               }
           }
 
