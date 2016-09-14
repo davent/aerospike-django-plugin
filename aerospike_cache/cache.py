@@ -349,7 +349,7 @@ class AerospikeCache(BaseCache):
         """
         closes the database connection
         """
-        self._client.close()
+        #self._client.close()
         
     def unpickle(self, value):
         """
