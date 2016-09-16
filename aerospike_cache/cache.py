@@ -231,7 +231,7 @@ class AerospikeCache(BaseCache):
             meta['ttl'] = self.timeout
 
         #compose the value for the cache key
-        record = {self.aero_bin: value}
+        record = {self.aero_bin: value, 'key': key}
         ret = self._client.put(aero_key, record, meta, self.policy)
 
         if ret == 0:
